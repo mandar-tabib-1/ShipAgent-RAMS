@@ -1,0 +1,43 @@
+# LLM Supervisor Configuration for RAMS Framework
+# R/V Gunnerus AI System
+
+llm:
+  # API Configuration
+  api_key: "${NTNU_API_KEY}"  # Loaded from .env or environment (never hardcode!)
+  api_base: "https://llm.hpc.ntnu.no/v1"  # Base URL of NTNU LLM server
+  
+  # Model Configuration
+  model: "moonshotai/Kimi-K2.5"  # LLM model name
+  
+  # Generation Parameters
+  temperature: 0.1  # Lower = more deterministic, Higher = more creative
+  max_tokens: 4096  # Max tokens per response
+  timeout: 4000.0  # Request timeout in seconds
+
+  # Retry Configuration
+  max_retries: 3
+  retry_delay: 1.0  # seconds
+
+# Supervisor Agent Settings
+supervisor:
+  # Update frequency
+  reasoning_interval: 5.0  # seconds between LLM reasoning cycles
+  
+  # Risk thresholds for escalation
+  safety_critical_threshold: 0.7  # Safety index below this triggers alert
+  rul_critical_hours: 100  # RUL below this is critical
+  availability_threshold: 0.8  # Below 80% triggers concern
+  
+  # Response modes
+  verbose_mode: true  # Detailed explanations
+  include_colregs_references: true  # Cite specific COLREGS rules
+  include_dnv_references: true  # Cite DNV standards
+
+# Vessel Context (injected into prompts)
+vessel:
+  name: "R/V Gunnerus"
+  mmsi: 258342000
+  imo: 9371361
+  owner: "NTNU"
+  dp_class: "SDP-11"
+  operational_area: "Norwegian coastal waters"
