@@ -1,4 +1,4 @@
-# AI for RAMS R/V Gunnerus
+# AI for RAMS of Autonomous Vessel
 
 ## 🚀 Installation
 
