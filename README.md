@@ -1,4 +1,4 @@
-# AI for RAMS of Autonomous Vessel
+# Testing AI for Safety, maintenance, availability and reliability for Marine Vessel Autonomy.
 
 ## 🚀 Installation
 
@@ -22,8 +22,8 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 ### Clone & sync environment
 
 ```bash
-git clone https://github.com/<your-username>/gunnerus-ai-system.git
-cd gunnerus-ai-system
+git https://github.com/mandar-tabib-1/ShipAgent-RAMS.git
+cd ShipAgent-RAMS
 
 # Install all dependencies into .venv (exact versions from uv.lock)
 uv sync
@@ -94,25 +94,9 @@ streamlit run streamlit_app.py
 
 ## 🚢 Multi-Agent Predictive Maintenance & Navigation Framework
 
-This agentic AI framework is specifically designed for **NTNU's research vessel R/V Gunnerus**, utilizing open-source data from various maritime research projects.
+This agentic AI framework is specifically designed for testing vessel autonomy using publically available open-source dataset.
 
-## Vessel Specifications
 
-| Property | Value |
-|----------|-------|
-| **Name** | Gunnerus |
-| **MMSI** | 258342000 |
-| **IMO** | 9371361 |
-| **Call Sign** | LNVZ |
-| **Owner** | NTNU (Norwegian University of Science and Technology) |
-| **Home Port** | Trondheim, Norway |
-| **Built** | 2006 (extended 2019) |
-| **LOA** | 36.25 m |
-| **Beam** | 9.60 m |
-| **Draft** | 2.70 m |
-| **Propulsion** | Diesel-electric (low hydroacoustic noise) |
-| **Thrusters** | 2x Azimuth (stern) + 1x Tunnel (bow) |
-| **DP System** | Kongsberg SDP-11 |
 
 ## 🏗️ Architecture
 
@@ -438,7 +422,7 @@ See [rams_agents/CREDITS.md](rams_agents/CREDITS.md) for full attribution.
 ## �🚀 Quick Start
 
 ```bash
-cd gunnerus_ai_system
+cd ShipAgent-RAMS
 
 # Run with synthetic data
 python main_demo.py
@@ -467,55 +451,77 @@ python rl_psf_demo.py                                    # RL policy + PSF safet
 ## 📁 Project Structure
 
 ```
-gunnerus_ai_system/
-├── __init__.py                  # Package info & vessel specs
-├── orchestrator.py              # Main orchestrator
-├── main_demo.py                 # Demo script
-├── rams_demo.py                 # RAMS system demo
-├── rl_psf_demo.py               # RL+PSF collision avoidance demo
-├── sensor_fusion_ml.py          # ML training module
-├── visualize_sensor_fusion.py   # GUI visualization
-├── visualize_ml_fusion.py       # ML comparison visualization
+ShipAgent_ai_system/
+├── __init__.py                        # Package info & vessel specs
+├── orchestrator.py                    # Main orchestrator
+├── main_demo.py                       # Demo script
+├── rams_demo.py                       # RAMS system demo
+├── rl_psf_demo.py                     # RL+PSF collision avoidance demo
+├── llm_supervisor_demo.py             # LLM supervisor demo
+├── integrated_navigation_display.py   # Integrated navigation GUI
+├── streamlit_app.py                   # Streamlit web app
+├── sensor_fusion_ml.py                # ML training module
+├── visualize_sensor_fusion.py         # GUI visualization
+├── visualize_ml_fusion.py             # ML comparison visualization
+├── test_all_modules.py                # Module test suite
+├── data.csv                           # Scenario data
+├── pyproject.toml                     # Project configuration
+├── uv.lock                            # Dependency lock file
 │
-├── agents/                      # Navigation agents
+├── agents/                            # Navigation agents
 │   ├── __init__.py
-│   ├── base_agent.py            # Base agent class
-│   ├── sensor_fusion_agent.py   # Kalman filter + ML
-│   └── collision_avoidance_agent.py  # COLREGS
+│   ├── agents.py                      # Agent definitions
+│   ├── base_agent.py                  # Base agent class
+│   ├── sensor_fusion_agent.py         # Kalman filter + ML
+│   └── collision_avoidance_agent.py   # COLREGS
 │
-├── rams_agents/                 # RAMS framework agents
+├── config/                            # Configuration
 │   ├── __init__.py
-│   ├── base_agent.py            # RAMS base agent
-│   ├── supervisor_agent.py      # Orchestrates all RAMS agents
-│   ├── safety_agent.py          # RL+PSF collision avoidance
-│   ├── reliability_agent.py     # RUL prediction
-│   ├── availability_agent.py    # Redundancy monitoring
-│   ├── maintainability_agent.py # Maintenance optimization
-│   ├── psf_filter.py            # Potential Safety Function (CBF)
-│   ├── rl_observation_adapter.py # Tracks → RL observation
-│   ├── rul_estimator.py         # RUL estimation models
-│   ├── sensor_redundancy.py     # Sensor availability
-│   ├── CREDITS.md               # Attribution for RL model
+│   ├── gunnerus_config.py             # Vessel configuration
+│   └── llm_config.yaml               # LLM configuration
+│
+├── rams_agents/                       # RAMS framework agents
+│   ├── __init__.py
+│   ├── base_agent.py                  # RAMS base agent
+│   ├── supervisor_agent.py            # Orchestrates all RAMS agents
+│   ├── llm_supervisor_agent.py        # LLM-based supervisor
+│   ├── safety_agent.py                # RL+PSF collision avoidance
+│   ├── reliability_agent.py           # RUL prediction
+│   ├── availability_agent.py          # Redundancy monitoring
+│   ├── dp_availability.py             # DP system availability
+│   ├── maintainability_agent.py       # Maintenance optimization
+│   ├── psf_filter.py                  # Potential Safety Function (CBF)
+│   ├── rl_observation_adapter.py      # Tracks → RL observation
+│   ├── rul_estimator.py               # RUL estimation models
+│   ├── sensor_redundancy.py           # Sensor availability
+│   ├── CREDITS.md                     # Attribution for RL model
+│   ├── README.md                      # RAMS documentation
 │   │
-│   ├── ml_models/               # ML models for RAMS
-│   │   ├── rl_collision_policy.py  # Pre-trained PPO policy
-│   │   ├── lstm_rul.py          # LSTM for RUL prediction
-│   │   ├── autoencoder_anomaly.py  # Anomaly detection
-│   │   └── rl_policy_stage2.pth # Pre-trained weights
+│   ├── ml_models/                     # ML models for RAMS
+│   │   ├── rl_collision_policy.py     # Pre-trained PPO policy
+│   │   ├── lstm_rul.py                # LSTM for RUL prediction
+│   │   ├── autoencoder_anomaly.py     # Anomaly detection
+│   │   ├── train_models.py            # Model training scripts
+│   │   └── rl_policy_stage2.pth      # Pre-trained weights
 │   │
-│   └── data_loaders/            # Data loaders
-│       ├── uci_naval_loader.py  # UCI Naval dataset
-│       └── navigation_loader.py # Navigation data
+│   └── data_loaders/                  # Data loaders
+│       ├── uci_naval_loader.py        # UCI Naval dataset
+│       └── navigation_loader.py       # Navigation data
 │
 ├── data/
 │   ├── __init__.py
-│   ├── autoferry_loader.py      # Dataset loader
-│   ├── README.md                # Dataset documentation
-│   └── sensor_fusion_dataset/   # Downloaded from GitHub
+│   ├── autoferry_loader.py            # Dataset loader
+│   ├── README.md                      # Dataset documentation
+│   └── sensor_fusion_dataset/         # Scenarios 2,3,4,5,6,13,16,17,22
 │
 └── models/
-    ├── maneuver_detector.pkl    # Trained RF classifier
-    └── sensor_reliability.pkl   # Sensor error statistics
+    ├── maneuver_detector.pkl          # Trained RF classifier
+    ├── sensor_reliability.pkl         # Sensor error statistics
+    ├── lstm_rul.pkl                   # LSTM RUL model
+    ├── autoencoder_anomaly.pkl        # Anomaly detection model
+    ├── test_X.npy                     # Test features
+    ├── test_kMc.npy                   # Test Kalman covariance
+    └── test_kMt.npy                   # Test Kalman targets
 ```
 
 ## 🔧 DNV RAMS Framework
@@ -635,7 +641,7 @@ streamlit run streamlit_app.py
 
 **Current Limitation**: The sensor fusion agent assumes the observer vessel is stationary. Target positions and velocities are computed in the observer's body-relative frame without accounting for the observer's own motion.
 
-**Impact**: When the observer vessel (e.g., R/V Gunnerus) is moving:
+**Impact**: When the observer vessel is moving:
 - Target velocity estimates may be incorrect (observer motion is attributed to targets)
 - Track positions are relative to a moving reference frame
 - CPA/TCPA calculations may be inaccurate
@@ -682,7 +688,6 @@ observer_state = {
 3. Run Kalman filter in world-fixed frame
 4. Target velocities now correctly represent their true motion
 
-**For R/V Gunnerus**: The vessel is equipped with a Kongsberg Seapath GPS/INS system that provides the required position/velocity/heading data at high update rates. Integration of this data stream would enable accurate world-frame target tracking.
 
 ### Autoferry Dataset Note
 
