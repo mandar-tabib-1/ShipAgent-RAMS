@@ -2248,6 +2248,16 @@ def main():
         
         # DATA INPUT: Navigation scenario selection
         st.subheader("Navigation Scenario")
+        
+        # Show dataset info if using sample
+        autoferry_info = data_sources.get('autoferry_info', {})
+        dataset_type = autoferry_info.get('type', 'unknown')
+        if dataset_type == 'sample':
+            st.caption(f"ℹ️ **{autoferry_info.get('count', 3)} scenarios included** (sample dataset)")
+            available_scenarios = autoferry_info.get('available_scenarios', [])
+            if available_scenarios:
+                st.caption(f"Available: {', '.join(available_scenarios)}")
+        
         if data_sources.get('loaded'):
             # Use AutoFerry available scenarios if present, fallback to navigation loader
             autoferry_info = data_sources.get('autoferry_info', {})
@@ -2515,6 +2525,19 @@ Restart Streamlit after installation.
     # Step 0: Configuration / Start
     if st.session_state.current_step == 0:
         st.header("📋 Step 1: Load Data for Analysis")
+        
+        # Show dataset info banner
+        autoferry_info = data_sources.get('autoferry_info', {})
+        if autoferry_info.get('type') == 'sample':
+            st.info("""
+**📦 Using Sample Dataset**  
+This demo includes **3 real maritime scenarios** from the AutoFerry sensor fusion benchmark:
+- **scenario2**: Crossing maneuver
+- **scenario13**: Targets from each side (docked)
+- **scenario16**: Targets from each side (stationary)
+
+For all 9 scenarios, install the full dataset locally (see sidebar).
+""")
         
         st.markdown("""
         ### Data Selection
