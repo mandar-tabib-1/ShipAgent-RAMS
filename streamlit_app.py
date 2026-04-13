@@ -2354,7 +2354,7 @@ def main():
         
         # KF Source for RL-PSF
         st.markdown("**KF Source for RL-PSF:**")
-        prev_kf_source = st.session_state.get('kf_source_for_rlpsf', 'ML KF')
+        prev_kf_source = st.session_state.get('kf_source_for_rlpsf', 'Base KF')
         kf_source = st.radio(
             "Select which KF tracks feed Safety Agent",
             options=['ML KF', 'Base KF'],
