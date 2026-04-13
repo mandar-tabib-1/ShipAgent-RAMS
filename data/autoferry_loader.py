@@ -113,6 +113,20 @@ class AutoferryDataLoader:
             dataset_path: Path to the sensor_fusion_dataset folder
         """
         self.dataset_path = dataset_path
+        self.is_sample_dataset = False
+        
+        # Fallback to sample dataset if full dataset not available
+        if not os.path.exists(dataset_path):
+            sample_path = dataset_path + '_sample'
+            if os.path.exists(sample_path):
+                self.dataset_path = sample_path
+                self.is_sample_dataset = True
+                print(f"[AutoferryDataLoader] Using sample dataset (3 scenarios) from {sample_path}")
+                print(f"[AutoferryDataLoader] Install full dataset for all 9 scenarios:")
+                print(f"[AutoferryDataLoader]   git clone https://github.com/Autoferry/sensor_fusion_dataset.git {dataset_path}")
+        else:
+            print(f"[AutoferryDataLoader] Using full dataset from {dataset_path}")
+        
         self.available_scenarios = self._find_scenarios()
         
     def _find_scenarios(self) -> List[str]:

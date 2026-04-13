@@ -508,11 +508,32 @@ def load_data_sources():
         navigation_loader = NavigationDataLoader()
         scenarios = navigation_loader.list_scenarios()
         
+        # Check which AutoFerry dataset is available
+        from data.autoferry_loader import AutoferryDataLoader
+        dataset_path = 'data/sensor_fusion_dataset'
+        try:
+            autoferry_loader = AutoferryDataLoader(dataset_path)
+            dataset_type = 'sample' if autoferry_loader.is_sample_dataset else 'full'
+            dataset_scenario_count = len(autoferry_loader.available_scenarios)
+            dataset_info = {
+                'type': dataset_type,
+                'scenario_count': dataset_scenario_count,
+                'available_scenarios': autoferry_loader.available_scenarios
+            }
+        except Exception as e:
+            dataset_info = {
+                'type': 'none',
+                'scenario_count': 0,
+                'available_scenarios': [],
+                'error': str(e)
+            }
+        
         return {
             'propulsion': propulsion_loader,
             'navigation': navigation_loader,
             'scenarios': scenarios,
-            'loaded': True
+            'loaded': True,
+            'autoferry_info': dataset_info
         }
     except Exception as e:
         return {'loaded': False, 'error': str(e)}
@@ -2228,12 +2249,21 @@ def main():
         # DATA INPUT: Navigation scenario selection
         st.subheader("Navigation Scenario")
         if data_sources.get('loaded'):
-            available_scenarios = data_sources.get('scenarios', ['scenario16'])
+            # Use AutoFerry available scenarios if present, fallback to navigation loader
+            autoferry_info = data_sources.get('autoferry_info', {})
+            available_scenarios = autoferry_info.get('available_scenarios', 
+                                                    data_sources.get('scenarios', ['scenario16']))
+            
+            # Default to scenario16 if available, otherwise first available
+            default_idx = 0
+            if 'scenario16' in available_scenarios:
+                default_idx = available_scenarios.index('scenario16')
+            
             selected_scenario = st.selectbox(
                 "Select Scenario",
                 available_scenarios,
-                index=available_scenarios.index('scenario16') if 'scenario16' in available_scenarios else 0,
-                help="AutoFerry sensor fusion dataset scenario"
+                index=default_idx,
+                help=f"AutoFerry sensor fusion dataset scenario ({len(available_scenarios)} available)"
             )
         else:
             selected_scenario = 'scenario16'
@@ -2337,6 +2367,26 @@ def main():
         
         if data_sources.get('loaded'):
             st.success("✓ Data loaded")
+            
+            # Show AutoFerry dataset info
+            autoferry_info = data_sources.get('autoferry_info', {})
+            if autoferry_info.get('type') == 'sample':
+                st.info(f"📦 **Sample Dataset** ({autoferry_info['scenario_count']} scenarios included)")
+                with st.expander("ℹ️ Upgrade to Full Dataset"):
+                    st.markdown("""
+**Current**: Sample dataset with 3 scenarios (scenario2, 13, 16)
+
+**Upgrade**: Install full dataset for all 9 scenarios:
+```bash
+cd data
+git clone https://github.com/Autoferry/sensor_fusion_dataset.git
+```
+Restart Streamlit after installation.
+""")
+            elif autoferry_info.get('type') == 'full':
+                st.success(f"✓ **Full Dataset** ({autoferry_info['scenario_count']} scenarios)")
+            else:
+                st.warning("⚠ AutoFerry dataset not found")
         else:
             st.error(f"✗ {data_sources.get('error', 'Load failed')}")
         

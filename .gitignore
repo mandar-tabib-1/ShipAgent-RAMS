@@ -14,3 +14,7 @@ dist/
 
 # macOS
 .DS_Store
+
+# AutoFerry full dataset (exclude, sample is included)
+data/sensor_fusion_dataset/
+!data/sensor_fusion_dataset_sample/

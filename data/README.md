@@ -2,6 +2,18 @@
 
 This directory contains data loaders and datasets for the Vessel AI System.
 
+## Quick Start 🚀
+
+**⭐ Sample Dataset Included!** This repository includes 3 AutoFerry scenarios for immediate use:
+- `sensor_fusion_dataset_sample/` → Works out-of-the-box (no installation needed)
+- Includes: scenario2, scenario13, scenario16
+
+**Optional: Full Dataset** For all 9 scenarios, install separately:
+```bash
+cd data
+git clone https://github.com/Autoferry/sensor_fusion_dataset.git
+```
+
 ## Datasets
 
 ### Autoferry Sensor Fusion Dataset
@@ -12,7 +24,16 @@ This directory contains data loaders and datasets for the Vessel AI System.
 > Brekke, E. F., et al. "Heterogeneous multi-sensor tracking for an autonomous 
 > surface vehicle in a littoral environment." Ocean Engineering, 252 (2022): 111168.
 
-**Installation:**
+**Two Options:**
+
+| Option | Location | Scenarios | Size | Installation |
+|--------|----------|-----------|------|--------------|
+| **Sample** (included) | `sensor_fusion_dataset_sample/` | 3 | ~5-10MB | Built-in ✓ |
+| **Full** (optional) | `sensor_fusion_dataset/` | 9 | ~50MB+ | Requires git clone |
+
+The loader automatically uses the full dataset if both are present.
+
+**Installation (Full Dataset):**
 ```bash
 cd data
 git clone https://github.com/Autoferry/sensor_fusion_dataset.git
